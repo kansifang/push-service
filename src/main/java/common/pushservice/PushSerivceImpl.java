@@ -1,5 +1,6 @@
 package common.pushservice;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PushSerivceImpl implements PushService {
 		addUser(userId, TokenType.Google, googleToken);
 	}
 
-	public void push(String userId, PushMessage msg) {
+	public void push(String userId, PushMessage msg) throws IOException {
 		String sql = "select * from user_token where user_id=?";
 		JdbcTemplate jt = new JdbcTemplate(dataSource);
 		List<UserToken> tokens = jt.query(sql, new Object[]{}, new RowMapper<UserToken>(){
@@ -63,7 +64,7 @@ public class PushSerivceImpl implements PushService {
 		applePushService.push(token, msg);
 	}
 
-	public void pushToGoogle(String token, PushMessage msg) {
+	public void pushToGoogle(String token, PushMessage msg) throws IOException {
 		googlePushService.push(token, msg);
 	}
 
