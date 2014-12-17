@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-public class PushSerivceImpl implements PushService {
+public class PushServiceImpl implements PushService {
 	private DataSource dataSource;
 	private ApplePushService applePushService;
 	private GooglePushService googlePushService;
@@ -23,6 +23,18 @@ public class PushSerivceImpl implements PushService {
 		
 		sql = "insert into user_token(user_id, type, token) values (?, ?, ?)";
 		jt.update(sql, userId, TokenType.Apple.name(), token);
+	}
+	
+	public void setDataSource(DataSource ds) {
+		this.dataSource = ds;
+	}
+	
+	public void set(ApplePushService applePushService) {
+		this.applePushService = applePushService;
+	}
+	
+	public void set(GooglePushService googlePushService) {
+		this.googlePushService = googlePushService;
 	}
 	
 	public void setup() {
