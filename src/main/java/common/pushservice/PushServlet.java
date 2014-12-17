@@ -43,13 +43,6 @@ public class PushServlet extends HttpServlet {
 		pushService.setup();
 	}
 
-//	db.userName=sa
-//	db.password=
-//	db.url=jdbc:h2:/tmp/ishopping/__DATASOURCEID__;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
-//	db.dbClassName=org.h2.Driver
-	
-	
-	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
