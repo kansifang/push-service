@@ -4,22 +4,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	ds.setDriverClassName(config.getInitParameter("dbClassName"));
-	ds.setUsername(config.getInitParameter("userName"));
-	ds.setPassword(config.getInitParameter("password"));
-	ds.setUrl(config.getInitParameter("url"));
-	pushService.setDataSource(ds);
-
-	String apiKey = config.getInitParameter("googlePushNotificationApiKey");
-	GooglePushService googlePushService = new GooglePushService(apiKey );
-	pushService.set(googlePushService);
-
-	String p12FilePath =
-	config.getInitParameter("applePushNotificationP12FilePath");
-	String password = config.getInitParameter("applePushNotificationPassword");
-	boolean sandbox =
-	"true".equalsIgnoreCase(config.getInitParameter("applePushNotificationSandbox"));
-
 	<context-param>
 		<param-name>dbClassName</param-name>
 		<param-value>org.h2.Driver</param-value>
@@ -40,17 +24,17 @@
 		<param-name>googlePushNotificationApiKey</param-name>
 		<param-value></param-value>
 	</context-param>
-	<context-param>
-		<param-name>applePushNotificationP12FilePath</param-name>
-		<param-value></param-value>
-	</context-param>
-	<context-param>
-		<param-name>applePushNotificationPassword</param-name>
-		<param-value></param-value>
-	</context-param>
+    <context-param>
+        <param-name>applePushNotificationP12FilePath</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>applePushNotificationPassword</param-name>
+        <param-value></param-value>
+    </context-param>
 	<context-param>
 		<param-name>applePushNotificationSandbox</param-name>
-		<param-value>true</param-value>
+		<param-value>false</param-value>
 	</context-param>
 
 	<servlet>
@@ -59,7 +43,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PushServlet</servlet-name>
-		<url-pattern>/push</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

@@ -74,27 +74,26 @@
 
 	</dependencies>
 
-	<plugins>
-		<plugin>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-maven-plugin</artifactId>
-			<version>8.1.12.v20130726</version>
-			<configuration>
-				<connectors>
-					<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-						<port>9090</port>
-						<maxIdleTime>60000</maxIdleTime>
-					</connector>
-				</connectors>
-				<webApp>
-					<contextPath>/push</contextPath>
-				</webApp>
-			</configuration>
-		</plugin>
-	</plugins>
-	
 	<build>
-	   <finalName>push-service</finalName>
+		<finalName>push-service</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.12.v20130726</version>
+				<configuration>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>9090</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
-	
+
 </project>

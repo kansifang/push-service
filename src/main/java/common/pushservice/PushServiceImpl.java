@@ -38,7 +38,7 @@ public class PushServiceImpl implements PushService {
 	}
 	
 	public void setup() {
-		String sql = "create table if not exists user_token (user_id varchar(64), type varchar(32), token varchar(1023), primary key (user_id, type)";
+		String sql = "create table if not exists user_token (user_id varchar(64), type varchar(32), token varchar(1023), primary key (user_id, type))";
 		new JdbcTemplate(dataSource).update(sql);
 	}
 

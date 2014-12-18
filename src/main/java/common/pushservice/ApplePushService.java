@@ -3,6 +3,7 @@ package common.pushservice;
 import java.io.FileNotFoundException;
 
 import com.notnoop.apns.APNS;
+import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.ApnsServiceBuilder;
 import com.notnoop.exceptions.InvalidSSLConfig;
@@ -16,12 +17,16 @@ public class ApplePushService {
 			    .withCert(p12FilePath, password);
 		if(sandbox)
 		    builder = builder.withSandboxDestination();
+		else
+			builder = builder.withProductionDestination();
 			   
 	    service = builder.build();
 	}
 	
-	public void push(String token, PushMessage msg) {
+	public ApnsNotification push(String token, PushMessage msg) {
 		String payload = APNS.newPayload().badge(msg.badge).alertBody(msg.alert).build();
-		service.push(token, payload );
+		ApnsNotification noti = service.push(token, payload );
+		System.out.println("apns: " + noti.getIdentifier() + ", " + new String(noti.getDeviceToken()) + ", " + new String(noti.getPayload()) + ", " + token);
+		return noti;
 	}
 }
