@@ -82,6 +82,12 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>8.1.12.v20130726</version>
 				<configuration>
+					<systemProperties>
+                        <systemProperty><name>dbClassName</name><value>com.mysql.jdbc.Driver</value></systemProperty>
+                        <systemProperty><name>userName</name><value>root</value></systemProperty>
+                        <systemProperty><name>password</name><value></value></systemProperty>
+                        <systemProperty><name>url</name><value>jdbc:mysql://localhost:3306/push_service?useUnicode=true&amp;characterEncoding=utf8</value></systemProperty>
+					</systemProperties>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>9090</port>

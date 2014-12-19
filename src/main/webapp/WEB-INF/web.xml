@@ -4,39 +4,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-	<context-param>
-		<param-name>dbClassName</param-name>
-		<param-value>org.h2.Driver</param-value>
-	</context-param>
-	<context-param>
-		<param-name>userName</param-name>
-		<param-value>sa</param-value>
-	</context-param>
-	<context-param>
-		<param-name>password</param-name>
-		<param-value></param-value>
-	</context-param>
-	<context-param>
-		<param-name>url</param-name>
-		<param-value>jdbc:h2:/tmp/pushservice;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE</param-value>
-	</context-param>
-	<context-param>
-		<param-name>googlePushNotificationApiKey</param-name>
-		<param-value>AIzaSyD6IQvpN0cpJjIn1iFWPPgW7SiP8WQsoIY</param-value>
-	</context-param>
-    <context-param>
-        <param-name>applePushNotificationP12FilePath</param-name>
-        <param-value></param-value>
-    </context-param>
-    <context-param>
-        <param-name>applePushNotificationPassword</param-name>
-        <param-value></param-value>
-    </context-param>
-	<context-param>
-		<param-name>applePushNotificationSandbox</param-name>
-		<param-value>false</param-value>
-	</context-param>
-
 	<servlet>
 		<servlet-name>PushServlet</servlet-name>
 		<servlet-class>common.pushservice.PushServlet</servlet-class>

@@ -2,6 +2,8 @@ package common.pushservice;
 
 import java.io.IOException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,24 +21,30 @@ public class PushServlet extends HttpServlet {
 		
 		pushService = new PushServiceImpl();
 		
-		try {
-			BasicDataSource ds = new BasicDataSource();
-			ds.setDriverClassName(getSettings("dbClassName"));
-			ds.setUsername(getSettings("userName"));
-			ds.setPassword(getSettings("password"));
-			ds.setUrl(getSettings("url"));
-			pushService.setDataSource(ds);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		BasicDataSource ds = new BasicDataSource();
+		ds.setDriverClassName(getSettings("dbClassName"));
+		ds.setUsername(getSettings("userName"));
+		ds.setPassword(getSettings("password"));
+		ds.setUrl(getSettings("url"));
+		pushService.setDataSource(ds);
 		
 		pushService.setup();
 	}
 	
 	private String getSettings(String key) {
 		String value = getServletContext().getInitParameter(key);
-		if(value == null || value.trim().length()==0)
-			value = System.getenv(key);
+		try {
+			if(value == null || value.trim().length()==0)
+				value = System.getenv(key);
+			if(value == null || value.trim().length()==0)
+				value = System.getProperty(key);
+			if(value == null || value.trim().length()==0) {
+				Context env = (Context)new InitialContext().lookup("java:comp/env");
+				value = (String) env.lookup(key);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 		System.out.println(key + " = " + value);
 		return value;
 	}
