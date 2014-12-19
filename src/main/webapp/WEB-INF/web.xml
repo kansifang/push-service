@@ -22,7 +22,7 @@
 	</context-param>
 	<context-param>
 		<param-name>googlePushNotificationApiKey</param-name>
-		<param-value></param-value>
+		<param-value>AIzaSyD6IQvpN0cpJjIn1iFWPPgW7SiP8WQsoIY</param-value>
 	</context-param>
     <context-param>
         <param-name>applePushNotificationP12FilePath</param-name>

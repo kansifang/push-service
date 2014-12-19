@@ -16,7 +16,7 @@ public class GooglePushService {
 	public boolean push(String token, PushMessage msg) throws IOException {
 		Sender sender = new Sender(apiKey);
 		Message message = new Message.Builder()
-		    .addData("message", "this is the message")
+		    .addData("message", msg.alert)
 		    .addData("other-parameter", "some value")
 		    .build();
 		Result result = sender.send(message, token, 1);

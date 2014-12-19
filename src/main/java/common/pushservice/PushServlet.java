@@ -30,20 +30,6 @@ public class PushServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		
-		String apiKey = getSettings("googlePushNotificationApiKey");
-		GooglePushService googlePushService = new GooglePushService(apiKey );
-		pushService.set(googlePushService);
-		
-		String p12FilePath = getSettings("applePushNotificationP12FilePath");
-		String password = getSettings("applePushNotificationPassword");
-		boolean sandbox = "true".equalsIgnoreCase(getSettings("applePushNotificationSandbox"));
-		try {
-			ApplePushService applePushService = new ApplePushService(p12FilePath, password, sandbox);
-			pushService.set(applePushService);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-		
 		pushService.setup();
 	}
 	
@@ -59,7 +45,6 @@ public class PushServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String uri = req.getRequestURI();
-		System.out.println("received request " + uri);
 		if(uri.indexOf("add-apple-user")!=-1)
 			addAppleUser(req, resp);
 		else if(uri.indexOf("add-google-user")!=-1)
@@ -76,66 +61,50 @@ public class PushServlet extends HttpServlet {
 	void addAppleUser(HttpServletRequest req, HttpServletResponse resp) {
 		String userId = req.getParameter("userId");
 		String appleToken = req.getParameter("appleToken");
-		pushService.addAppleUser(userId, appleToken);
+		String app = req.getParameter("app");
+		pushService.addAppleUser(app, userId, appleToken);
 	}
 	
 	void addGoogleUser(HttpServletRequest req, HttpServletResponse resp) {
 		String userId = req.getParameter("userId");
 		String googleToken = req.getParameter("googleToken");
-		pushService.addGoogleUser(userId, googleToken);
+		String app = req.getParameter("app");
+		pushService.addGoogleUser(app, userId, googleToken);
 	}
 	
 	void pushToApple(HttpServletRequest req, HttpServletResponse resp) {
 		String userId = req.getParameter("userId");
 		String token = req.getParameter("token");
+		String app = req.getParameter("app");
 		if(userId != null && userId.trim().length()>0) {
-			pushService.addAppleUser(userId, token);
+			pushService.addAppleUser(app, userId, token);
 		}
-		String badge = req.getParameter("badge");
 		String alert = req.getParameter("alert");
-		int badgeNumber = 0;
-		try {
-			badgeNumber = Integer.parseInt(badge);
-		} catch (Exception e) {
-		}
 		PushMessage msg = new PushMessage();
 		msg.alert = alert;
-		msg.badge = badgeNumber;
-		pushService.pushToApple(token, msg);
+		pushService.pushToApple(app, token, msg);
 	}
 	
 	void pushToGoogle(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String userId = req.getParameter("userId");
 		String token = req.getParameter("token");
+		String app = req.getParameter("app");
 		if(userId != null && userId.trim().length()>0) {
-			pushService.addGoogleUser(userId, token);
+			pushService.addGoogleUser(app, userId, token);
 		}
-		String badge = req.getParameter("badge");
 		String alert = req.getParameter("alert");
-		int badgeNumber = 0;
-		try {
-			badgeNumber = Integer.parseInt(badge);
-		} catch (Exception e) {
-		}
 		PushMessage msg = new PushMessage();
 		msg.alert = alert;
-		msg.badge = badgeNumber;
-		pushService.pushToGoogle(token, msg);
+		pushService.pushToGoogle(app, token, msg);
 	}
 	
 	void pushToUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String userId = req.getParameter("userId");
-		String badge = req.getParameter("badge");
 		String alert = req.getParameter("alert");
-		int badgeNumber = 0;
-		try {
-			badgeNumber = Integer.parseInt(badge);
-		} catch (Exception e) {
-		}
+		String app = req.getParameter("app");
 		PushMessage msg = new PushMessage();
 		msg.alert = alert;
-		msg.badge = badgeNumber;
-		pushService.push(userId, msg);
+		pushService.push(app, userId, msg);
 	}
 	
 

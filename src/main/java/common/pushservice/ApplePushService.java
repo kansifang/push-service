@@ -24,7 +24,8 @@ public class ApplePushService {
 	}
 	
 	public ApnsNotification push(String token, PushMessage msg) {
-		String payload = APNS.newPayload().badge(msg.badge).alertBody(msg.alert).build();
+		token = token.replaceAll(" ", "");
+		String payload = APNS.newPayload().alertBody(msg.alert).build();
 		ApnsNotification noti = service.push(token, payload );
 		System.out.println("apns: " + noti.getIdentifier() + ", " + new String(noti.getDeviceToken()) + ", " + new String(noti.getPayload()) + ", " + token);
 		return noti;
