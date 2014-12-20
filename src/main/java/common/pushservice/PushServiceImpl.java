@@ -40,6 +40,9 @@ public class PushServiceImpl implements PushService {
 		
 		sql = "create table if not exists configuration (name varchar(128), value varchar(1024), primary key (name))";
 		new JdbcTemplate(dataSource).update(sql);
+		
+		sql = "create table if not exists application (name varchar(128), ip varchar(1024) not null, primary key (name))";
+		new JdbcTemplate(dataSource).update(sql);
 	}
 
 	public void addAppleUser(String app, String userId, String appleToken) {
@@ -110,5 +113,27 @@ public class PushServiceImpl implements PushService {
 		}
 		return service;
 	}
+
+	public void deleteApp(String app) {
+		String sql = "delete from application where app=?";
+		new JdbcTemplate(dataSource).update(sql, app);
+	}
+
+	public void registerApp(String app, String ips) throws ApplicationExistException {
+		String sql = "select count(*) from application where name = ?";
+		int cnt = new JdbcTemplate(dataSource).queryForObject(sql, new Object[]{app}, Integer.class);
+		if(cnt > 0)
+			throw new ApplicationExistException(app);
+		ips = ips.replace('*', '-');
+		sql = "insert into applicaton (name, ips) values (?, ?)";
+		new JdbcTemplate(dataSource).update(sql, app, ips);
+	}
+
+	public boolean allowed(String app, String ip) {
+		String sql = "select ips from application where name = ?";
+		String allowedIps = new JdbcTemplate(dataSource).queryForObject(sql, new Object[]{app}, String.class);
+		return allowedIps != null && allowedIps.contains(ip);
+	}
+	
 	
 }
